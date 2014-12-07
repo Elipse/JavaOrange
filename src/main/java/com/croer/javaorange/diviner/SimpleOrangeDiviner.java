@@ -5,26 +5,30 @@
  */
 package com.croer.javaorange.diviner;
 
+import com.croer.javaorange.util.Configuration;
+import com.croer.javaorange.util.Util;
 import com.croer.javaorange.definition.Mediator;
 import com.croer.javaorange.definition.OrangeDiviner;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
+import org.apache.commons.configuration.CompositeConfiguration;
 
 /**
  *
  * @author elialva
  */
 public class SimpleOrangeDiviner extends javax.swing.JDialog implements OrangeDiviner {
+    
+    CompositeConfiguration configuration = Configuration.getCONFIGURATION();
+    private JComponent jComponent;
 
     /**
      * Creates new form SimpleOrangeDiviner2
@@ -39,20 +43,40 @@ public class SimpleOrangeDiviner extends javax.swing.JDialog implements OrangeDi
         initComponents();
         setUndecorated(true);
         setContentPane(jPanel);
-        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_CONTROL, InputEvent.CTRL_MASK), "collapse");
-        getRootPane().getActionMap().put("collapse", new AbstractAction() {
+        
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SimpleOrangeDiviner.this.setVisible(false);
-            }
-        });
+        Util.activateFunctionKey(SimpleOrangeDiviner.this, new FormAction("ENTER"));                //Efectua la selección                              
+        Util.activateFunctionKey(SimpleOrangeDiviner.this, new FormAction("control CONTROL"));      //Cancela la consulta y oculta el diálogo
+        Util.activateFunctionKey(SimpleOrangeDiviner.this, new FormAction("alt SPACE"));            //Reinicia la selección de toda la tabla
+        Util.activateFunctionKey(SimpleOrangeDiviner.this, new FormAction(configuration.getString("Plus")));                   //Incrementa en uno la cantidad
+        Util.activateFunctionKey(SimpleOrangeDiviner.this, new FormAction("alt DOWN"));                   //Decrementa en uno la cantidad
+        Util.activateFunctionKey(SimpleOrangeDiviner.this, new FormAction("UP"));                   //Recorrido hacia arriba
+        Util.activateFunctionKey(SimpleOrangeDiviner.this, new FormAction("DOWN"));                 //Recorrido hacia abajo
+        Util.activateFunctionKey(SimpleOrangeDiviner.this, new FormAction("PAGE_UP"));              //Retrocede una página
+        Util.activateFunctionKey(SimpleOrangeDiviner.this, new FormAction("PAGE_DOWN"));            //Avanza una página
+        
 
+//        getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("pressed UP"), "go");
+//        getRootPane().getActionMap().put("go", new AbstractAction() {
+//
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                System.out.println("Yepa " + System.currentTimeMillis());
+//            }
+//        });
+//        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_CONTROL, InputEvent.CTRL_MASK), "collapse");
+//        getRootPane().getActionMap().put("collapse", new AbstractAction() {
+//
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                SimpleOrangeDiviner.this.setVisible(false);
+//            }
+//        });
         jPanel.addPropertyChangeListener(new PropertyChangeListener() {
 
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                System.out.println("Evento: " + evt.getPropertyName()+ "-" + evt.getNewValue());
+                System.out.println("Evento: " + evt.getPropertyName() + "-" + evt.getNewValue());
             }
         });
     }
@@ -126,6 +150,8 @@ public class SimpleOrangeDiviner extends javax.swing.JDialog implements OrangeDi
     // End of variables declaration//GEN-END:variables
     @Override
     public void show(JComponent jComponent) {
+        this.jComponent = jComponent;
+        System.out.println(configuration.getString(jComponent.getName()));
         Point location = jComponent.getLocationOnScreen();
         Dimension size = jComponent.getSize();
         Point xy = new Point(location.x, location.y + size.height);
@@ -145,5 +171,26 @@ public class SimpleOrangeDiviner extends javax.swing.JDialog implements OrangeDi
     public void collapse() {
         //Le pide a Controller  cancelar o a JPanel 
         setVisible(false);
+    }
+
+    private class FormAction extends AbstractAction {
+
+        FormAction(String name) {
+            super(name);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String functionKey = (String) getValue(Action.NAME);
+            switch (functionKey) {
+                
+                case "control CONTROL":
+                    System.out.println(functionKey);
+                    SimpleOrangeDiviner.this.setVisible(false);
+                    break;                
+                default:
+                    System.out.println(functionKey);
+            }
+        }
     }
 }

@@ -5,6 +5,8 @@
  */
 package com.croer.javaorange.diviner;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -25,6 +27,15 @@ public class SimpleOrangeDivinerPanel extends JPanel {
      */
     public SimpleOrangeDivinerPanel() {
         initComponents();
+        Component[] components = getComponents();
+        for (Component component : components) {
+            System.out.println("ESdd " + component);
+        }
+        
+        
+        
+        
+        
 
         PropertyChangeListener pcl = new PropertyChangeListenerPanel();
         simpleOrangeTextPane1.addPropertyChangeListener(pcl);
@@ -55,7 +66,6 @@ public class SimpleOrangeDivinerPanel extends JPanel {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
         simpleOrangeTextPane1 = new com.croer.javaorange.diviner.SimpleOrangeTextPane();
 
         setBackground(new java.awt.Color(153, 0, 0));
@@ -134,7 +144,7 @@ public class SimpleOrangeDivinerPanel extends JPanel {
                 .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        jScrollPane3.setViewportView(simpleOrangeTextPane1);
+        simpleOrangeTextPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nomis", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, null, new java.awt.Color(204, 51, 0)));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -145,14 +155,14 @@ public class SimpleOrangeDivinerPanel extends JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane3))
+                    .addComponent(simpleOrangeTextPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(simpleOrangeTextPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -170,9 +180,8 @@ public class SimpleOrangeDivinerPanel extends JPanel {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
-    private com.croer.javaorange.diviner.SimpleOrangeTextPane simpleOrangeTextPane1;
+    public com.croer.javaorange.diviner.SimpleOrangeTextPane simpleOrangeTextPane1;
     // End of variables declaration//GEN-END:variables
 
     private class MouseAdapterPanel extends MouseAdapter {
@@ -182,7 +191,7 @@ public class SimpleOrangeDivinerPanel extends JPanel {
             int index = jTable1.rowAtPoint(e.getPoint());
 
             if (index >= 0) {
-                SimpleOrangeDivinerPanel.this.firePropertyChange("MOUSEMOVED", -1, index);
+                SimpleOrangeDivinerPanel.this.firePropertyChange("MouseMoved", -1, index);
             }
         }
 
@@ -191,7 +200,7 @@ public class SimpleOrangeDivinerPanel extends JPanel {
             int index = jTable1.rowAtPoint(e.getPoint());
 
             if (SwingUtilities.isLeftMouseButton(e)) {
-                SimpleOrangeDivinerPanel.this.firePropertyChange("MOUSERELEASED", -1, index);
+                SimpleOrangeDivinerPanel.this.firePropertyChange("MouseReleased", -1, index);
             }
         }
     }
@@ -209,9 +218,9 @@ public class SimpleOrangeDivinerPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource() == SimpleOrangeDivinerPanel.this.jButton1) {
-                SimpleOrangeDivinerPanel.this.firePropertyChange("buttonForward", null, "");
+                SimpleOrangeDivinerPanel.this.firePropertyChange("pageup", null, "");
             } else {
-                SimpleOrangeDivinerPanel.this.firePropertyChange("buttonBackward", null, "");
+                SimpleOrangeDivinerPanel.this.firePropertyChange("pagedown", null, "");
             }
         }
     }

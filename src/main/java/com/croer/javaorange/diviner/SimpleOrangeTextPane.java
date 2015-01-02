@@ -7,20 +7,13 @@ package com.croer.javaorange.diviner;
 
 import com.croer.javaorange.util.ColorUtils;
 import com.croer.javaorange.util.Configuration;
-import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.swing.AbstractAction;
 import javax.swing.JComponent;
-import javax.swing.JTable;
 import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.border.TitledBorder;
@@ -43,13 +36,13 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class SimpleOrangeTextPane extends JTextPane {
 
-    List<Color> colorArray = Arrays.asList(new Color[]{Color.black, Color.orange});
-    List<String> textArray = Arrays.asList(new String[]{"codibar", "descrip", "color", "todo"});
     private final CompositeConfiguration CONFIGURATION;
-    private Style[] styles;
+    private final Style[] styles;
+    private final DefaultStyledDocument dsd;
+    private final MyDocumentFilter documentFilter;
 
     public SimpleOrangeTextPane() {
-        this.CONFIGURATION = Configuration.getCONFIGURATION();
+        CONFIGURATION = Configuration.getCONFIGURATION();
 
         //Create the style array to show the colors 
         List<Object> colorList = CONFIGURATION.getList("ColorWord");
@@ -61,137 +54,27 @@ public class SimpleOrangeTextPane extends JTextPane {
             StyleConstants.setBold(styles[i], true);
         }
 
-//        addKeyListener(new KeyListenerTextPane());
+        //Deactive key bindings 
         List<Object> navigationList = CONFIGURATION.getList("PageNavigation");
-        System.out.println("ListaY " + navigationList);
         for (Object object : navigationList) {
             getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke(object.toString()), "none");
         }
 
-        getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("F5"), "COLOR");
-
-        getActionMap().put("COLOR", new AbstractAction() {
-
-            int i = 0;
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String[] styleNames = new String[]{"magentaStyle", "blueStyle", "redStyle"};
-                final Style[] styles = new Style[styleNames.length];
-                Color[] colors = new Color[]{Color.magenta, Color.blue, Color.red};
-                TitledBorder border = (TitledBorder) SimpleOrangeTextPane.this.getBorder();
-                Color a = colorArray.get(i++ % colorArray.size());
-
-                border.setTitleColor(a);
-
-                repaint();
-
-            }
-        });
-        getInputMap(JComponent.WHEN_FOCUSED).put(KeyStroke.getKeyStroke("F6"), "context");
-
-        getActionMap().put("context", new AbstractAction() {
-
-            int i = 0;
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                TitledBorder border = (TitledBorder) SimpleOrangeTextPane.this.getBorder();
-                border.setTitle(textArray.get(i++ % textArray.size()));
-                repaint();
-
-            }
-        });
-
-        getActionMap().put("na", null);
-        DefaultStyledDocument dsd = (DefaultStyledDocument) getDocument();
+        //Get the document for adding a document listener
+        dsd = (DefaultStyledDocument) getDocument();
         dsd.addDocumentListener(new DocumentListenerTextPane());
-        dsd.setDocumentFilter(new DocumentFilter() {
 
-            Pattern regEx = Pattern.compile("^[\\d\\s]*$");
-
-            @Override
-            public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-                Matcher matcher = regEx.matcher(text);
-                if (!matcher.matches()) {
-                    return;
-                }
-                super.replace(fb, offset, length, text, attrs); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
-                super.remove(fb, offset, length); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
-            public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-                System.out.println("LaCden es " + string);
-                Matcher matcher = regEx.matcher(string);
-                if (!matcher.matches()) {
-                    return;
-                }
-                super.insertString(fb, offset, string, attr); //To change body of generated methods, choose Tools | Templates.
-            }
-        });
+        //...and setting a document filter
+        documentFilter = new MyDocumentFilter();
+        dsd.setDocumentFilter(documentFilter);
     }
 
-    private class KeyListenerTextPane implements KeyListener {
-
-        @Override
-        public void keyTyped(KeyEvent e) {
-
-        }
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_ENTER: {
-                    SimpleOrangeTextPane.this.firePropertyChange("selection", 0, e.getKeyCode());
-
-//                    e.consume();
-                    break;
-                }
-                case KeyEvent.VK_PAGE_UP: {
-//                    SimpleOrangeTextPane.this.firePropertyChange("pageup", 0, e.getKeyCode());
-//                    e.consume();
-                    break;
-                }
-                case KeyEvent.VK_PAGE_DOWN: {
-                    SimpleOrangeTextPane.this.firePropertyChange("pagedown", 0, e.getKeyCode());
-//                    e.consume();
-                    break;
-                }
-//                case KeyEvent.VK_UP: {
-//                    SimpleOrangeTextPane.this.firePropertyChange("up", 0, e.getKeyCode());
-//                    e.consume();
-//                    break;
-//                }
-                case KeyEvent.VK_DOWN: {
-                    SimpleOrangeTextPane.this.firePropertyChange("down", 0, e.getKeyCode());
-                    e.consume();
-                    JTable d;
-                    break;
-                }
-                case KeyEvent.VK_INSERT:
-                    String keys = KeyEvent.getModifiersExText(e.getModifiersEx());
-                    if (keys.equals("Shift")) {
-                        SimpleOrangeTextPane.this.firePropertyChange("substract", 0, e.getKeyCode());
-                    } else {
-                        SimpleOrangeTextPane.this.firePropertyChange("add", 0, e.getKeyCode());
-                    }
-                    e.consume();
-                    break;
-                default:
-            }
-
-        }
-
-        @Override
-        public void keyReleased(KeyEvent e) {
-
-        }
+    public void setFilter(String title, String regex) {
+        setText("");
+        documentFilter.setRegex(regex);
+        TitledBorder border = (TitledBorder) SimpleOrangeTextPane.this.getBorder();
+        border.setTitle(title);
+        repaint();
     }
 
     private class DocumentListenerTextPane implements DocumentListener {
@@ -211,7 +94,6 @@ public class SimpleOrangeTextPane extends JTextPane {
         @Override
         public void changedUpdate(DocumentEvent e) {
         }
-
     }
 
     protected void fireText(DocumentEvent e) {
@@ -234,7 +116,7 @@ public class SimpleOrangeTextPane extends JTextPane {
                 try {
                     input = document.getText(0, document.getLength());
                 } catch (BadLocationException ex) {
-//                    Logger.getLogger(ColorPane.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(SimpleOrangeTextPane.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
                 StringBuilder inputMut = new StringBuilder(input);
@@ -251,10 +133,35 @@ public class SimpleOrangeTextPane extends JTextPane {
         );
     }
 
-    public void setLook(String title, Color color, DocumentFilter filter) {
-        //set title
-        DefaultStyledDocument dsd = (DefaultStyledDocument) getDocument();
-        dsd.addDocumentListener(new DocumentListenerTextPane());
-        dsd.setDocumentFilter(filter);
+    private class MyDocumentFilter extends DocumentFilter {
+
+        Pattern regExp = Pattern.compile(".");
+
+        private void setRegex(String regex) {
+            this.regExp = Pattern.compile(regex);
+        }
+
+        @Override
+        public void replace(DocumentFilter.FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+            Matcher matcher = regExp.matcher(text);
+            if (!matcher.matches()) {
+                return;
+            }
+            super.replace(fb, offset, length, text, attrs); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public void remove(DocumentFilter.FilterBypass fb, int offset, int length) throws BadLocationException {
+            super.remove(fb, offset, length); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        @Override
+        public void insertString(DocumentFilter.FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+            Matcher matcher = regExp.matcher(string);
+            if (!matcher.matches()) {
+                return;
+            }
+            super.insertString(fb, offset, string, attr); //To change body of generated methods, choose Tools | Templates.
+        }
     }
 }

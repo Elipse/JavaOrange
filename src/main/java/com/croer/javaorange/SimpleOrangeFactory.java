@@ -5,7 +5,6 @@
  */
 package com.croer.javaorange;
 
-import com.croer.javaorange.diviner.SimpleOrangeDivinerPanel;
 import com.croer.javaorange.diviner.SimpleOrangeDiviner;
 import com.croer.javaorange.definition.OrangeDiviner;
 import com.croer.javaorange.definition.OrangeFactory;
@@ -21,7 +20,7 @@ class SimpleOrangeFactory implements OrangeFactory {
     }
 
     public OrangeDiviner newOrangeDiviner() {
-        return new SimpleOrangeDiviner(null, new SimpleOrangeDivinerPanel());
+        return new SimpleOrangeDiviner(null);
     }
 
     public OrangeScribe newOrangeScribe() {

@@ -26,7 +26,7 @@ import org.apache.commons.configuration.CompositeConfiguration;
  * @author elialva
  */
 public class SimpleOrangeDiviner extends javax.swing.JDialog implements OrangeDiviner {
-    
+
     CompositeConfiguration configuration = Configuration.getCONFIGURATION();
     private JComponent jComponent;
 
@@ -38,12 +38,10 @@ public class SimpleOrangeDiviner extends javax.swing.JDialog implements OrangeDi
         initComponents();
     }
 
-    public SimpleOrangeDiviner(Mediator mediator, JPanel jPanel) {
+    public SimpleOrangeDiviner(Mediator mediator) {
         super((Frame) null, true);
         initComponents();
         setUndecorated(true);
-        setContentPane(jPanel);
-        
 
         Util.activateFunctionKey(SimpleOrangeDiviner.this, new FormAction("ENTER"));                //Efectua la selección                              
         Util.activateFunctionKey(SimpleOrangeDiviner.this, new FormAction("control CONTROL"));      //Cancela la consulta y oculta el diálogo
@@ -54,7 +52,7 @@ public class SimpleOrangeDiviner extends javax.swing.JDialog implements OrangeDi
         Util.activateFunctionKey(SimpleOrangeDiviner.this, new FormAction("DOWN"));                 //Recorrido hacia abajo
         Util.activateFunctionKey(SimpleOrangeDiviner.this, new FormAction("PAGE_UP"));              //Retrocede una página
         Util.activateFunctionKey(SimpleOrangeDiviner.this, new FormAction("PAGE_DOWN"));            //Avanza una página
-        
+        Util.activateFunctionKey(SimpleOrangeDiviner.this, new FormAction("F5"));                   //
 
 //        getRootPane().getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke("pressed UP"), "go");
 //        getRootPane().getActionMap().put("go", new AbstractAction() {
@@ -72,7 +70,7 @@ public class SimpleOrangeDiviner extends javax.swing.JDialog implements OrangeDi
 //                SimpleOrangeDiviner.this.setVisible(false);
 //            }
 //        });
-        jPanel.addPropertyChangeListener(new PropertyChangeListener() {
+        jPanel1.addPropertyChangeListener(new PropertyChangeListener() {
 
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
@@ -90,18 +88,122 @@ public class SimpleOrangeDiviner extends javax.swing.JDialog implements OrangeDi
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jProgressBar1 = new javax.swing.JProgressBar();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        simpleOrangeTextPane1 = new com.croer.javaorange.diviner.SimpleOrangeTextPane();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+        jPanel1.setBackground(new java.awt.Color(153, 0, 0));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jScrollPane2.setFocusable(false);
+
+        jTable1.setBackground(java.awt.Color.orange);
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3"
+            }
+        ));
+        jTable1.setFocusable(false);
+        jScrollPane2.setViewportView(jTable1);
+
+        jPanel2.setBackground(java.awt.Color.orange);
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel2.setFocusable(false);
+
+        jLabel1.setText("jLabel1");
+        jLabel1.setFocusable(false);
+
+        jProgressBar1.setBackground(java.awt.Color.orange);
+        jProgressBar1.setFocusable(false);
+
+        jButton1.setBackground(java.awt.Color.orange);
+        jButton1.setText("F");
+        jButton1.setFocusable(false);
+
+        jButton2.setBackground(java.awt.Color.orange);
+        jButton2.setText("B");
+        jButton2.setFocusable(false);
+
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel2.setText("01");
+        jLabel2.setFocusable(false);
+        jLabel2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 116, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
+
+        simpleOrangeTextPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nomis", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, null, new java.awt.Color(204, 51, 0)));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(simpleOrangeTextPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(simpleOrangeTextPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -141,12 +243,23 @@ public class SimpleOrangeDiviner extends javax.swing.JDialog implements OrangeDi
                         System.exit(0);
                     }
                 });
+                dialog.pack();
                 dialog.setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JProgressBar jProgressBar1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
+    public com.croer.javaorange.diviner.SimpleOrangeTextPane simpleOrangeTextPane1;
     // End of variables declaration//GEN-END:variables
     @Override
     public void show(JComponent jComponent) {
@@ -183,11 +296,14 @@ public class SimpleOrangeDiviner extends javax.swing.JDialog implements OrangeDi
         public void actionPerformed(ActionEvent e) {
             String functionKey = (String) getValue(Action.NAME);
             switch (functionKey) {
-                
+
                 case "control CONTROL":
                     System.out.println(functionKey);
                     SimpleOrangeDiviner.this.setVisible(false);
-                    break;                
+                    break;
+                case "F5":
+                    simpleOrangeTextPane1.setFilter(Math.random() + "", "^[\\d\\s]*$");
+                    break;
                 default:
                     System.out.println(functionKey);
             }
